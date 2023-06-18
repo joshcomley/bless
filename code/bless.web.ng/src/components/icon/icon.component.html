@@ -1,0 +1,12 @@
+<ng-container *ngIf="iconMap">
+  <i
+    *ngIf="iconMap && iconMap.group !== 'mi'"
+    [class]="(nativeName ?? '') + ' ' + iconMap.group"
+  ></i>
+  <i
+    *ngIf="iconMap.group === 'mi'"
+    [ngStyle]="{ 'font-size': miSize + 'px', 'height': miSize + 'px' }"
+    class="material-icons max-w-full overflow-hidden mi"
+    >{{ iconMap.nativeName }}</i
+  >
+</ng-container>

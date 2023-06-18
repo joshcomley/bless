@@ -1,0 +1,32 @@
+<ng-container *ngIf="hasInit">
+  <ng-container *ngIf="renderContext?.template != null">
+    <ng-container *ngIf="isString">
+      {{ renderContext.template }}
+    </ng-container>
+    <ng-container *ngIf="isTemplate">
+      <ng-container
+        *ngTemplateOutlet="
+          templateAsTemplateRef;
+          context: { renderContext: renderContext }
+        "
+      ></ng-container>
+    </ng-container>
+    <ng-container *ngIf="isComponent || isLambda">
+      <ng-template [cdkPortalOutlet]="portal"></ng-template>
+    </ng-container>
+    <!-- <ng-container *ngIf="isProperty && propertyTemplate">
+      <bless-portal
+        [renderContextInternal]="renderContext"
+        [template]="propertyTemplate"
+      >
+      </bless-portal>
+    </ng-container> -->
+  </ng-container>
+  <ng-container *ngIf="renderContext.template == null && unresolvedTemplate">
+    <bless-portal
+      [renderContextInternal]="renderContext"
+      [template]="unresolvedTemplate"
+    >
+    </bless-portal>
+  </ng-container>
+</ng-container>
