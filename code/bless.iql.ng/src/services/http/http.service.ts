@@ -15,6 +15,8 @@ export class IqlODataHttpService implements IHttpProvider, IErrorProvider {
     }
 
     private static FromError(response: HttpErrorResponse): HttpResult {
+        // console.log(`HTTP ERROR: ${response.message}`);
+        // console.log(`HTTP ERROR: ${response.error}`);
         var httpResult = new HttpResult(
             async () => response.error,//new Promise<string>(r => r(response.text())),
             async () => response.error,//response.arrayBuffer(),
@@ -114,6 +116,7 @@ export class IqlODataHttpService implements IHttpProvider, IErrorProvider {
 
     public Put<TResult>(uri: string, payload: IHttpRequest, TResultType?: Type<TResult> | Interface<TResult>): Promise<IHttpResult> {
         console.log(`PATCH: ${decodeURI(uri)}`);
+        console.log(payload.Body);
         return this.PerformRequest(options => {
             options.body = payload.Body;
             //IqlLoggerService.IfEnabled(() => IqlLoggerService.Log("PATCHING::"));
