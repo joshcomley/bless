@@ -11,6 +11,13 @@ export class Services extends ServicesProvider {
 
     protected _subscriptionManager: SubscriptionManagerService;
 
+    public uiDelay(action: () => any) {
+        this.globalBusy.markBusy("navigation");
+        setTimeout(() => {
+            action();
+        }, 200);
+    }
+
     public get activatedRoute(): ActivatedRoute {
         return this.get(ActivatedRoute);
     }
