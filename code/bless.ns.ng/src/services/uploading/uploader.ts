@@ -64,6 +64,8 @@ export class Uploader extends UploaderService {
                 androidNotificationTitle: 'sync'
             };
 
+            this.log.log(`Request: ${JSON.stringify(request)}`);
+
             if (shouldFail) {
                 request.headers["Should-Fail"] = true;
             }
@@ -75,21 +77,36 @@ export class Uploader extends UploaderService {
                     { name: "fileToUpload", filename: pathOfFileToUpload, mimeType: 'image/jpeg' }
                 ];
                 this.log.log(`multipartUpload`);
-                task = this.session.multipartUpload(params, request);
+                try {
+                    task = this.session.multipartUpload(params, request);
+                } catch (e) {
+                    this.log.logException(e);
+                    throw e;
+                }
             } else {
-                this.log.log(`uploadFile`);
-                task = this.session.uploadFile(pathOfFileToUpload, request);
+                this.log.log(`uploadFile: ${pathOfFileToUpload}`);
+                try {
+                    task = this.session.uploadFile(pathOfFileToUpload, request);
+                } catch (e) {
+                    this.log.logException(e);
+                    throw e;
+                }
             }
 
+            this.log.log(`Monitoring upload to: ${url}`);
+
             task.on("progress", p => {
-                let progress = (100 / p.totalBytes) * p.currentBytes;
+                const progress = (100 / p.totalBytes) * p.currentBytes;
+                this.log.log(`Upload progress: ${progress}`);
                 this.updateStatus(key, _ => _.progress = progress);
                 this.onProgress.Emit(() => new UploadProgressEvent(this, progress));
             });
 
             task.on("error", error => {
-                alert(error.error);
                 this.log.logError(`Upload error: ${error.eventName}`);
+                try {
+                    this.log.logError(`Upload error: ${JSON.stringify(error)}`);
+                } catch { }
                 this.log.logError(`Upload error: ${error.error}`);
                 this.onError.Emit(() => new UploadErrorEvent(this));
             });
