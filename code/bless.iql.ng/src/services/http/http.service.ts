@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BlessError, IErrorProvider, Logger, UriService } from "@bless/core";
-import { HttpResult, IHttpProvider, IHttpRequest, IHttpResult } from "@brandless/iql.data";
+import { HttpResult, HttpStatusCode, IHttpProvider, IHttpRequest, IHttpResult } from "@brandless/iql.data";
 import { Interface, Type } from "@brandless/tsutility";
 import { lastValueFrom, Observable } from "rxjs";
 
@@ -21,7 +21,7 @@ export class IqlODataHttpService implements IHttpProvider, IErrorProvider {
             async () => response.error,//new Promise<string>(r => r(response.text())),
             async () => response.error,//response.arrayBuffer(),
             async () => response.error,//response.blob(),
-            0,
+            0 as HttpStatusCode,
             "",
             false);
         if (!response.status) {
