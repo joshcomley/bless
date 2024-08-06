@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { ChangeDetectorRef, Injector, NgZone, ViewContainerRef } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { BusyService, SubscriptionManagerService, TimerService, ValueFormatters } from "@bless/core";
+import { AsyncService, BusyService, SubscriptionManagerService, TimerService, ValueFormatters } from "@bless/core";
 import { NotifierService, ParamsService } from "@bless/ng";
 import { BackButtonServiceBase, BLESS_BACK_BUTTON_SERVICE, BLESS_LOCAL_STORAGE_SERVICE, IconRegistryService, ILocalStorageService } from "@bless/platform";
 import { ServicesProvider } from "./services-provider.service";
@@ -14,7 +14,10 @@ export class Services extends ServicesProvider {
     public uiDelay(action: () => any) {
         this.globalBusy.markBusy("navigation");
         setTimeout(() => {
-            action();
+            AsyncService.AwaitAsync(action())
+                .then(x => {
+                    this.globalBusy.unmarkBusy("navigation");
+                });
         }, 200);
     }
 
