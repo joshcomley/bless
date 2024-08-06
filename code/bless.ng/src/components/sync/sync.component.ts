@@ -7,7 +7,7 @@ import { EventSubscription } from "@brandless/iql.events";
 import { IqlSyncService, IqlSyncSetCompleteEvent } from "@brandless/iql.forms";
 import { Enum } from "@brandless/tsutility";
 // https://github.com/jvandemo/generator-angular2-library/issues/221#issuecomment-355945207
-import * as moment_ from 'moment';
+import moment_ from 'moment';
 import { Subscription } from "rxjs";
 			
 const moment = moment_;

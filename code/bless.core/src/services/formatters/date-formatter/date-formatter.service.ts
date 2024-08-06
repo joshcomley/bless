@@ -1,5 +1,5 @@
-import * as dayjs from "dayjs";
-import * as relativeTime from "dayjs/plugin/relativeTime";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { OptionsService } from "../../options/options.service";
 import { IValueFormatter } from "../value-formatter.contract";
 import { DateConverter } from "./date-converter.contract";
